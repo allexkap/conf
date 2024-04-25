@@ -9,9 +9,13 @@
         "hyprland/window",
     ],
     "modules-right": [
+        "hyprland/language",
         "backlight", // tmp
+        "temperature",
+        "memory",
         "network",
         "battery",
+        "power-profiles-daemon",
         "clock",
     ],
 
@@ -19,6 +23,17 @@
         "max-length": 50,
     },
 
+    "hyprland/language": {
+        "format": "{short}",
+    },
+    "memory": {
+        "interval": 30,
+        "format": "{percentage}%",
+        "max-length": 10,
+    },
+    "backlight": {
+        "reverse-scrolling": true,
+    },
     "network": {
         "interval": 10,
         "max-length": 50,
@@ -26,17 +41,25 @@
         "format-wifi": "{essid}  ",
         "format-disconnected": " ",
         "tooltip-format": "connecting",
-        "tooltip-format-wifi": "{ipaddr} {signaldBm}dBm",
+        "tooltip-format-wifi": "{signaldBm}dBm {ipaddr}",
         "tooltip-format-disconnected": "disconnected",
     },
     "battery": {
         "interval": 1,
         "states": {
             "warning": 30,
-            "critical": 10
+            "critical": 10,
         },
         "format": "{capacity}% {icon} ",
         "format-icons": ["", "", "", "", ""],
+    },
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "format-icons": {
+            "performance": "",
+            "balanced": "",
+            "power-saver": "",
+        },
     },
     "clock": {
         "format": "{:%H:%M}",
