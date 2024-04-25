@@ -10,7 +10,6 @@
     ],
     "modules-right": [
         "hyprland/language",
-        "backlight", // tmp
         "temperature",
         "memory",
         "network",
@@ -25,6 +24,7 @@
 
     "hyprland/language": {
         "format": "{short}",
+        "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next &> /dev/null",
     },
     "memory": {
         "interval": 30,
@@ -37,6 +37,7 @@
     "network": {
         "interval": 10,
         "max-length": 50,
+        "on-click": "iwgtk",
         "format": " ",
         "format-wifi": "{essid}  ",
         "format-disconnected": " ",
