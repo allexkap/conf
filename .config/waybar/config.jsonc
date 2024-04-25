@@ -1,9 +1,45 @@
 {
     "layer": "top",
-    "modules-left": ["hyprland/workspaces", "hyprland/submap"],
-    "modules-center": ["hyprland/window"],
-    "modules-right": ["battery", "clock"],
+
+    "modules-left": [
+        "hyprland/workspaces",
+        "hyprland/submap",
+    ],
+    "modules-center": [
+        "hyprland/window",
+    ],
+    "modules-right": [
+        "backlight", // tmp
+        "network",
+        "battery",
+        "clock",
+    ],
+
     "hyprland/window": {
-        "max-length": 50
-    }
+        "max-length": 50,
+    },
+
+    "network": {
+        "interval": 10,
+        "max-length": 50,
+        "format": " ",
+        "format-wifi": "{essid}  ",
+        "format-disconnected": " ",
+        "tooltip-format": "connecting",
+        "tooltip-format-wifi": "{ipaddr} {signaldBm}dBm",
+        "tooltip-format-disconnected": "disconnected",
+    },
+    "battery": {
+        "interval": 1,
+        "states": {
+            "warning": 30,
+            "critical": 10
+        },
+        "format": "{capacity}% {icon} ",
+        "format-icons": ["", "", "", "", ""],
+    },
+    "clock": {
+        "format": "{:%H:%M}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+    },
 }
