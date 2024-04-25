@@ -10,11 +10,11 @@
     ],
     "modules-right": [
         "hyprland/language",
-        "temperature",
         "memory",
+        "temperature",
         "network",
-        "battery",
         "power-profiles-daemon",
+        "battery",
         "clock",
     ],
 
@@ -39,7 +39,7 @@
         "max-length": 50,
         "on-click": "iwgtk",
         "format": " ",
-        "format-wifi": "{essid}  ",
+        "format-wifi": "{essid}",
         "format-disconnected": " ",
         "tooltip-format": "connecting",
         "tooltip-format-wifi": "{signaldBm}dBm {ipaddr}",
@@ -51,7 +51,7 @@
             "warning": 30,
             "critical": 10,
         },
-        "format": "{capacity}% {icon} ",
+        "format": "{icon}    {capacity}%",
         "format-icons": ["", "", "", "", ""],
     },
     "power-profiles-daemon": {
