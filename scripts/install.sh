@@ -1,21 +1,20 @@
 set -e
-set -x
+set -o pipefail
 
-if [ ! -d "$DEST" -o ! -d "$EFI" ]; then
+if [ ! -b "$DEST" -o ! -b "$EFI" ]; then
     echo DEST and EFI must be set >&2
     exit 1
 fi
 
 mkfs.btrfs "$DEST"
 
-mount --mkdir "$DEST" /@mnt
-btrfs subvolume create /@mnt
+mount -m "$DEST" /@mnt
 btrfs subvolume create /@mnt/@
 btrfs subvolume create /@mnt/@home
 
-mount --mkdir -o noatime,subvol=@ "$DEST" /mnt
-mount --mkdir -o noatime,subvol=@home "$DEST" /mnt/home
-mount --mkdir "$EFI" /mnt/boot/efi
+mount -m -o noatime,subvol=@ "$DEST" /mnt
+mount -m -o noatime,subvol=@home "$DEST" /mnt/home
+mount -m "$EFI" /mnt/boot/efi
 
 # otherwise systemd create subvolumes
 mkdir -p /mnt/var/lib/portables/
@@ -31,11 +30,12 @@ genfstab -U /mnt | sed 's/,subvolid=[0-9]\+//' >> /mnt/etc/fstab
 mkdir /@mnt/snapshots/
 btrfs subvolume snapshot -r /@mnt/@ /@mnt/snapshots/@_$(date -Is)_pacstrap
 
-arch-chroot /mnt << 'ENDOFCHROOT'
+arch-chroot /mnt << ENDOFCHROOT
+set -e
 ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 echo -e 'en_US.UTF-8 UTF-8\nru_RU.UTF-8 UTF-8' >> /etc/locale.gen
 locale-gen
-echo root | chpasswd
+passwd -d root
 grub-install --bootloader-id=auto
 grub-mkconfig -o /boot/grub/grub.cfg
 systemctl enable systemd-resolved
