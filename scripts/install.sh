@@ -1,8 +1,8 @@
 set -e
 set -o pipefail
 
-if [ ! -b "$DEST" -o ! -b "$EFI" ]; then
-    echo DEST and EFI must be set >&2
+if [ ! -b "$DEST" -o ! -b "$EFI" -o -z "$USERNAME"]; then
+    echo DEST, EFI and USERNAME must be set >&2
     exit 1
 fi
 
@@ -44,4 +44,35 @@ mkdir /etc/iwd/
 echo -e '[General]\nEnableNetworkConfiguration=true' >> /etc/iwd/main.conf
 ENDOFCHROOT
 
-btrfs subvolume snapshot -r /@mnt/@ /@mnt/snapshots/@_$(date -Is)_chroot
+btrfs subvolume snapshot -r /@mnt/@ /@mnt/snapshots/@_$(date -Is)_bootable
+
+
+arch-chroot /mnt << ENDOFCHROOT
+useradd -mU "$USERADD"
+passwd "$USERADD"
+
+sed -i -f /etc/default/grub \
+    -e '/GRUB_TIMEOUT=/s/5/0/;' \
+    -e '/GRUB_TIMEOUT_STYLE=/s/menu/hidden/;' \
+    -e '/GRUB_DISABLE_OS_PROBER=/s/#//;' \
+grub-mkconfig -o /boot/grub/grub.cfg
+echo 'install nouveau /usr/bin/false' > /etc/modprobe.d/blacklist.conf
+mkinitcpio -P
+
+pacman --noconfirm -S \
+    hyprland hyprlock hypridle \
+    waybar foot doas \
+    polkit ttf-font-awesome \
+
+ln -s /usr/bin/doas /usr/local/bin/sudo
+echo 'permit persist :wheel' > /etc/doas.conf
+usermod -aG wheel "$USERADD"
+
+mkdir /etc/systemd/system/getty@tty1.service.d/
+echo -e "[Service]\nExecStart=\nExecStart=-/sbin/agetty -a $USERADD %I \$TERM" \
+    > /etc/systemd/system/getty@tty1.service.d/autologin.conf
+echo -e "\nif [ -z \"\$WAYLAND_DISPLAY\" ] && [ \"\$XDG_VTNR\" -eq 1 ]; then\n\texec Hyprland\nfi" \
+    >> /etc/profile
+ENDOFCHROOT
+
+btrfs subvolume snapshot -r /@mnt/@ /@mnt/snapshots/@_$(date -Is)_useradd
