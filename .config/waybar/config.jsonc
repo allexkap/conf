@@ -37,7 +37,7 @@
     "network": {
         "interval": 10,
         "max-length": 50,
-        "on-click": "foot -a nmtui ~/.config/waybar/sleep_nmtui.sh",
+        "on-click": "foot -a nmtui bash -c 'sleep 0.1; nmtui'",
         "format": " ",
         "format-wifi": "{essid}",
         "format-disconnected": " ",
