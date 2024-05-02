@@ -17,8 +17,8 @@ mount -m -o noatime,subvol=@home "$DEST" /mnt/home
 mount -m "$EFI" /mnt/boot/efi
 
 # otherwise systemd create subvolumes
-mkdir -p /mnt/var/lib/portables/
-mkdir -p /mnt/var/lib/machines/
+mkdir -p /mnt/var/lib/portables
+mkdir -p /mnt/var/lib/machines
 
 sed '/ParallelDownloads/s/#//' -i /etc/pacman.conf
 
@@ -28,7 +28,7 @@ pacstrap -K /mnt \
 
 genfstab -U /mnt | sed 's/,subvolid=[0-9]\+//' >> /mnt/etc/fstab
 
-mkdir /@mnt/snapshots/
+mkdir /@mnt/snapshots
 btrfs subvolume snapshot -r /@mnt/@ /@mnt/snapshots/@_$(date -Is)_pacstrap
 
 arch-chroot /mnt <<- ENDOFCHROOT
@@ -61,17 +61,17 @@ arch-chroot /mnt <<- ENDOFCHROOT
 
 	pacman --noconfirm -S \\
 		hyprland hyprlock hypridle waybar \\
-		foot vim yazi imv firefox nautilus \\
+		foot vim yazi imv firefox nautilus code \\
 		fuzzel grim slurp wl-clipboard \\
 		networkmanager brightnessctl power-profiles-daemon \\
-		doas fish man git jq neofetch \\
-		polkit ttf-font-awesome \\
+		doas fish man git lazygit ripgrep jq neofetch \\
+		polkit xdg-desktop-portal-gtk gnome-themes-extra ttf-font-awesome \\
 
 	ln -s /usr/bin/doas /usr/local/bin/sudo
 	echo 'permit persist :wheel' > /etc/doas.conf
 	usermod -aG wheel "$USERADD"
 
-	mkdir /etc/systemd/system/getty@tty1.service.d/
+	mkdir /etc/systemd/system/getty@tty1.service.d
 	echo -e "[Service]\nExecStart=\nExecStart=-/sbin/agetty -a "$USERADD" %I \\\$TERM" \\
 		> /etc/systemd/system/getty@tty1.service.d/autologin.conf
 	echo -e "\nif [ -z \"\\\$WAYLAND_DISPLAY\" ] && [ \"\\\$XDG_VTNR\" -eq 1 ]; then\n\texec Hyprland\nfi" \\
@@ -82,12 +82,12 @@ arch-chroot /mnt <<- ENDOFCHROOT
 
 	su "$USERADD" <<- ENDOFSU
 		set -e
-		mkdir ~/projects/ && cd \\\$_
+		mkdir ~/projects && cd \\\$_
 		git clone https://github.com/allexkap/conf
 
-		mkdir ~/.ssh/
-		ln -s ~/projects/conf/.ssh/config ~/.ssh/
-		ln -s ~/projects/conf/.config/ ~/
+		mkdir ~/.ssh
+		ln -s ~/projects/conf/.ssh/config ~/.ssh
+		ln -s ~/projects/conf/.config ~
 
 		mkdir -p ~/.tmp/clone && cd \\\$_
 		git clone https://aur.archlinux.org/paru.git
