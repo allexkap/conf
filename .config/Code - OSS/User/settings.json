@@ -1,0 +1,31 @@
+{
+    // ---------------- EDITOR ----------------
+    "telemetry.telemetryLevel": "off",
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    // "window.zoomLevel": 0,
+    // "editor.fontSize": 14,
+    // "terminal.integrated.fontSize": 14,
+    "window.menuBarVisibility": "toggle",
+    "workbench.editor.wrapTabs": true,
+    "explorer.excludeGitIgnore": true,
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "editor.formatOnSave": true,
+    // ---------------- PYTHON ----------------
+    "python.terminal.executeInFileDir": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "always"
+        }
+    },
+    "black-formatter.args": [
+        // "--skip-string-normalization",   // patched
+    ],
+    "isort.args": [
+        "--profile",
+        "black",
+        "--float-to-top",
+    ],
+}
