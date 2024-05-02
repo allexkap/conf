@@ -1,0 +1,5 @@
+[options]
+scaling_mode = shrink
+upscaling_method = nearest_neighbour
+width = 624
+height = 352
