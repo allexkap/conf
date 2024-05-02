@@ -1,7 +1,7 @@
 set -e
 set -o pipefail
 
-if [ ! -b "$DEST" -o ! -b "$EFI" -o -z "$USERADD"]; then
+if [ ! -b "$DEST" -o ! -b "$EFI" -o -z "$USERADD" ]; then
 	echo DEST, EFI and USERADD must be set >&2
 	exit 1
 fi
@@ -20,7 +20,7 @@ mount -m "$EFI" /mnt/boot/efi
 mkdir -p /mnt/var/lib/portables/
 mkdir -p /mnt/var/lib/machines/
 
-sed -i '/ParallelDownloads/s/#//' /etc/pacman.conf
+sed '/ParallelDownloads/s/#//' -i /etc/pacman.conf
 
 pacstrap -K /mnt \
 	linux linux-firmware base \
@@ -49,33 +49,32 @@ arch-chroot /mnt <<- ENDOFCHROOT
 	useradd -mU "$USERADD"
 	passwd -d "$USERADD"
 
-	sed -i -f /etc/default/grub \
-		-e '/GRUB_TIMEOUT=/s/5/0/;' \
-		-e '/GRUB_TIMEOUT_STYLE=/s/menu/hidden/;' \
-		-e '/GRUB_DISABLE_OS_PROBER=/s/#//;' \
-
+	sed -e '/GRUB_TIMEOUT=/s/5/0/' \\
+		-e '/GRUB_TIMEOUT_STYLE=/s/menu/hidden/' \\
+		-e '/GRUB_DISABLE_OS_PROBER=/s/#//' \\
+		-i /etc/default/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
 	echo 'install nouveau /usr/bin/false' > /etc/modprobe.d/blacklist.conf
 	mkinitcpio -P
 
-	sed -i '/ParallelDownloads/s/#//' /etc/pacman.conf
+	sed '/ParallelDownloads/s/#//' -i /etc/pacman.conf
 
-	pacman --noconfirm -S \
-		hyprland hyprlock hypridle waybar \
-		foot vim yazi imv firefox nautilus \
-		fuzzel grim slurp wl-clipboard \
-		networkmanager brightnessctl power-profiles-daemon \
-		doas fish man git jq neofetch \
-		polkit ttf-font-awesome \
+	pacman --noconfirm -S \\
+		hyprland hyprlock hypridle waybar \\
+		foot vim yazi imv firefox nautilus \\
+		fuzzel grim slurp wl-clipboard \\
+		networkmanager brightnessctl power-profiles-daemon \\
+		doas fish man git jq neofetch \\
+		polkit ttf-font-awesome \\
 
 	ln -s /usr/bin/doas /usr/local/bin/sudo
 	echo 'permit persist :wheel' > /etc/doas.conf
 	usermod -aG wheel "$USERADD"
 
 	mkdir /etc/systemd/system/getty@tty1.service.d/
-	echo -e "[Service]\nExecStart=\nExecStart=-/sbin/agetty -a "$USERADD" %I \\\$TERM" \
+	echo -e "[Service]\nExecStart=\nExecStart=-/sbin/agetty -a "$USERADD" %I \\\$TERM" \\
 		> /etc/systemd/system/getty@tty1.service.d/autologin.conf
-	echo -e "\nif [ -z \"\\\$WAYLAND_DISPLAY\" ] && [ \"\\\$XDG_VTNR\" -eq 1 ]; then\n\texec Hyprland\nfi" \
+	echo -e "\nif [ -z \"\\\$WAYLAND_DISPLAY\" ] && [ \"\\\$XDG_VTNR\" -eq 1 ]; then\n\texec Hyprland\nfi" \\
 		>> /etc/profile
 	# \\\$ ok...
 
