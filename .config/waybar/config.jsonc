@@ -27,9 +27,13 @@
         "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next &> /dev/null",
     },
     "memory": {
-        "interval": 30,
+        "interval": 4,
         "format": "{percentage}%",
-        "max-length": 10,
+    },
+    "temperature": {
+        "thermal-zone": 3,
+        "critical-threshold": 70,
+        "interval": 4,
     },
     "backlight": {
         "reverse-scrolling": true,

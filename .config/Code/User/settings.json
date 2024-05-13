@@ -1,6 +1,10 @@
 {
-    // ---------------- EDITOR ----------------
+    // ---------------- GENERAL ---------------
     "telemetry.telemetryLevel": "off",
+    "extensions.autoCheckUpdates": false,
+    "extensions.autoUpdate": false,
+    "update.mode": "none",
+    // ---------------- EDITOR ----------------
     "files.eol": "\n",
     "files.insertFinalNewline": true,
     // "window.zoomLevel": 0,
@@ -12,20 +16,17 @@
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
     "editor.formatOnSave": true,
+    "terminal.integrated.defaultProfile.linux": "fish",
     // ---------------- PYTHON ----------------
     "python.terminal.executeInFileDir": true,
+    "python.languageServer": "Pylance",
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.inlayHints.variableTypes": true,
+    "python.analysis.inlayHints.functionReturnTypes": true,
     "[python]": {
-        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.defaultFormatter": "charliermarsh.ruff",
         "editor.codeActionsOnSave": {
-            "source.organizeImports": "always"
-        }
+            "source.organizeImports": "always",
+        },
     },
-    "black-formatter.args": [
-        // "--skip-string-normalization",   // patched
-    ],
-    "isort.args": [
-        "--profile",
-        "black",
-        "--float-to-top",
-    ],
 }
