@@ -61,11 +61,15 @@ arch-chroot /mnt <<- ENDOFCHROOT
 
 	pacman --noconfirm -S \\
 		hyprland hyprlock hypridle waybar \\
-		foot vim yazi imv firefox nautilus code \\
-		fuzzel grim slurp wl-clipboard \\
+		foot vim yazi firefox nautilus code \\
+		doas fish man git lazygit ripgrep neofetch \\
+		htop strace tree jq fzf \\
+		fuzzel cliphist grim slurp wl-clipboard \\
 		networkmanager brightnessctl power-profiles-daemon \\
-		doas fish man git lazygit ripgrep jq neofetch \\
-		polkit xdg-desktop-portal-gtk gnome-themes-extra ttf-font-awesome \\
+		imv gnome-disk-utility \\
+		polkit mate-polkit gvfs-mt \\
+		xdg-desktop-portal-gtk gnome-themes-extra ttf-font-awesome \\
+		base-devel
 
 	ln -s /usr/bin/doas /usr/local/bin/sudo
 	echo 'permit persist :wheel' > /etc/doas.conf
