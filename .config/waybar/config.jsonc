@@ -6,10 +6,10 @@
 
     "modules-left": [
         "hyprland/workspaces",
-        "hyprland/submap",
+        "hyprland/submap"
     ],
     "modules-center": [
-        "hyprland/window",
+        "hyprland/window"
     ],
     "modules-right": [
         "hyprland/language",
@@ -18,59 +18,73 @@
         "network",
         "power-profiles-daemon",
         "battery",
-        "clock",
+        "clock"
     ],
 
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "1": "",
+            "2": "󰈹",
+            "3": "󰨞"
+        },
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": []
+        }
+    },
+
     "hyprland/window": {
-        "max-length": 50,
+        "max-length": 50
     },
 
     "hyprland/language": {
         "format": "{short}",
-        "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next &> /dev/null",
+        "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next &> /dev/null"
     },
     "memory": {
         "interval": 4,
-        "format": "{percentage}%",
+        "format": "{percentage}%"
     },
     "temperature": {
         "thermal-zone": 3,
         "critical-threshold": 70,
-        "interval": 4,
+        "interval": 4
     },
     "backlight": {
-        "reverse-scrolling": true,
+        "reverse-scrolling": true
     },
     "network": {
         "interval": 10,
-        "max-length": 50,
+        "max-length": 20,
         "on-click": "foot -a nmtui bash -c 'sleep 0.1; nmtui'",
-        "format": " ",
+        "format": "",
         "format-wifi": "{essid}",
-        "format-disconnected": " ",
-        "tooltip-format": "connecting",
+        "format-disconnected": "",
+        "tooltip-format": "Connecting",
         "tooltip-format-wifi": "{signaldBm}dBm {ipaddr}",
-        "tooltip-format-disconnected": "disconnected",
+        "tooltip-format-disconnected": "Disconnected"
     },
     "battery": {
         "interval": 1,
         "states": {
             "warning": 30,
-            "critical": 10,
+            "critical": 10
         },
         "format": "{icon} {capacity}%",
-        "format-icons": ["", "", "", "", ""],
+        "format-icons": ["", "", "", "", ""]
     },
     "power-profiles-daemon": {
         "format": "{icon}",
         "format-icons": {
             "performance": "",
             "balanced": "",
-            "power-saver": "",
-        },
+            "power-saver": ""
+        }
     },
     "clock": {
         "format": "{:%H:%M}",
-        "tooltip-format": "<tt>{calendar}</tt>",
-    },
+        "tooltip-format": "<tt>{calendar}</tt>"
+    }
 }
