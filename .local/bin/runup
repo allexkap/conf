@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+while :; do
+    if [ -x "$1" ]; then
+        exec "$1"
+    elif [ -f "$1" ]; then
+        exec bash "$1"
+    fi
+    [ "$PWD" = "/" ] && break
+    cd ..
+done
+
+echo "File '$1' not found" >&2
+exit 1
